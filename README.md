@@ -3,6 +3,8 @@
 * 76-1 Module Introduction and simple login form [With Registration Page]
 * 76-2 Setup Recaptcha and Validate Recaptcha
 * 76-3 Firebase Project Setup For Bistro Boss
+* 76-4 Setup Login page with AuthContext
+* 76-5 Explore React Hook Form Validation, Error Handling
 
 
 
