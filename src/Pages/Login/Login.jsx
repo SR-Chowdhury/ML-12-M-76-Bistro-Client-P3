@@ -5,6 +5,7 @@ import img from '../../assets/others/authentication1.png';
 import ReactHelmet from '../../Components/ReactHelmet/ReactHelmet';
 import { AuthContext } from '../../Providers/AuthProvider';
 import Swal from 'sweetalert2';
+import { Link } from 'react-router-dom';
 
 const Login = () => {
 
@@ -102,6 +103,7 @@ const Login = () => {
                             <div className="form-control mt-6">
                                 <button className="submitBtn" disabled={disabled}>Login</button>
                             </div>
+                            <p className='text-center'>New in this website? <Link to="/register" style={{color: 'var(--link-color)'}}>Register</Link></p>
                         </form>
                     </div>
                 </div>

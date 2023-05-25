@@ -5,6 +5,7 @@ import { AuthContext } from '../../Providers/AuthProvider';
 import Swal from 'sweetalert2';
 import { updateProfile } from 'firebase/auth';
 import { useForm } from 'react-hook-form';
+import { Link } from 'react-router-dom';
 
 const Register = () => {
 
@@ -14,7 +15,7 @@ const Register = () => {
     const { createUser } = useContext(AuthContext);
 
     const onSubmit = data => {
-        console.log(data); 
+        console.log(data);
     }
 
     // const handleSubmit = event => {
@@ -87,8 +88,16 @@ const Register = () => {
                                 <label className="label">
                                     <span className="label-text">Password</span>
                                 </label>
-                                <input type="password" {...register("password", { required: true, minLength: 6 ,maxLength: 20 })} name='password' placeholder="password" className="input input-bordered" />
-                                {errors.password && <span className='label-text-alt ms-1 mt-2 text-red-600'>Password field is required</span>}
+                                <input type="password" {...register("password", {
+                                    required: true,
+                                    minLength: 6,
+                                    maxLength: 20,
+                                    pattern: /(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z])/
+                                })} name='password' placeholder="password" className="input input-bordered" />
+                                {errors.password?.type === 'required' && <span className='label-text-alt ms-1 mt-2 text-red-600'>Password is required</span>}
+                                {errors.password?.type === 'minLength' && <span className='label-text-alt ms-1 mt-2 text-red-600'>Password length must be more than six characters</span>}
+                                {errors.password?.type === 'maxLength' && <span className='label-text-alt ms-1 mt-2 text-red-600'>Password length can not be more than twenty characters</span>}
+                                {errors.password?.type === 'pattern' && <span className='label-text-alt ms-1 mt-2 text-red-600'>Password must have one uppercase one lowercase one number an one special chracter</span>}
 
                                 {
                                     error && <p className='label-text-alt text-center text-red-600'>{error}</p>
@@ -97,6 +106,7 @@ const Register = () => {
                             <div className="form-control mt-6">
                                 <button className="submitBtn">Register</button>
                             </div>
+                            <p className='text-center'>Already Have an Account? <Link to="/login" style={{color: 'var(--link-color)'}}>Login</Link></p>
                         </form>
                     </div>
                 </div>

@@ -5,6 +5,7 @@
 * 76-3 Firebase Project Setup For Bistro Boss
 * 76-4 Setup Login page with AuthContext
 * 76-5 Explore React Hook Form Validation, Error Handling
+* 76-6 Use Regex Validation In React Hook Form And Signup
 
 
 
