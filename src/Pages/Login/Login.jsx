@@ -1,13 +1,17 @@
 import { loadCaptchaEnginge, LoadCanvasTemplate, LoadCanvasTemplateNoReload, validateCaptcha } from 'react-simple-captcha';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import './Login.css';
 import img from '../../assets/others/authentication1.png';
+import ReactHelmet from '../../Components/ReactHelmet/ReactHelmet';
+import { AuthContext } from '../../Providers/AuthProvider';
+import Swal from 'sweetalert2';
 
 const Login = () => {
 
     const [error, setError] = useState('');
     const [disabled, setDisabled] = useState(true);
     const captchaRef = useRef();
+    const { singIn } = useContext(AuthContext);
 
     useEffect(() => {
         loadCaptchaEnginge(6);
@@ -23,6 +27,24 @@ const Login = () => {
         if (password.length < 6) {
             setError('Password length at least 6 characters');
         }
+
+        singIn(email, password)
+            .then(result => {
+                Swal.fire({
+                    title: 'Successfully Loge in',
+                    showClass: {
+                        popup: 'animate__animated animate__fadeInDown'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__fadeOutUp'
+                    }
+                })
+                const loggedUser = result.user;
+                setError('');
+                form.reset();
+                // navigate(from, { replace: true });
+            })
+            .catch(err => setError(err.message))
     }
 
     const handleCaptcha = () => {
@@ -42,6 +64,7 @@ const Login = () => {
 
     return (
         <div className='loginContainer'>
+            <ReactHelmet title={'Login'} />
             <div className="hero min-h-screen">
                 <div className="hero-content flex md:justify-around">
                     <div className='heroSection'>
