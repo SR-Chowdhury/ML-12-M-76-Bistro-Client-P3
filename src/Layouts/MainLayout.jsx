@@ -9,6 +9,10 @@ const MainLayout = () => {
     const noHeaderFooterLogin = location.pathname.includes('/login');
     const noHeaderFooterRegister = location.pathname.includes('/register');
 
+    /**
+     * Or noHeaderFooter = location.pathname.includes('/login') || location.pathname.includes('/register')
+     */
+
     return (
         <div>
             {
