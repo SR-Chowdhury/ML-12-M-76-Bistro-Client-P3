@@ -11,7 +11,6 @@ const Login = () => {
 
     const [error, setError] = useState('');
     const [disabled, setDisabled] = useState(true);
-    const captchaRef = useRef();
     const { singIn } = useContext(AuthContext);
 
     useEffect(() => {
@@ -48,13 +47,13 @@ const Login = () => {
             .catch(err => setError(err.message))
     }
 
-    const handleCaptcha = () => {
-        const user_captcha_value = captchaRef.current.value;
+    const handleCaptcha = (event) => {
+        const user_captcha_value = event.target.value;
         console.log(user_captcha_value);
 
         if (validateCaptcha(user_captcha_value)) {
             setDisabled(false);
-            alert('Captcha matched!');
+            // alert('Captcha matched!');
         } else {
             setDisabled(true);
             alert('Captcha did not matched!');
@@ -94,8 +93,7 @@ const Login = () => {
                                     <span className="label-text">Captcha</span>
                                 </label>
                                 <LoadCanvasTemplate />
-                                <input type="text" ref={captchaRef} name='captcha' placeholder="Type the captcha above" className="input input-bordered" />
-                                <button onClick={handleCaptcha} className='py-2 px-5 w-1/2 mx-auto mt-2 bg-gray-500'>Validate</button>
+                                <input onBlur={handleCaptcha} type="text" name='captcha' placeholder="Type the captcha above" className="input input-bordered" />
                                 {
                                     error && <p className='label-text-alt text-center text-red-600'>{error}</p>
                                 }

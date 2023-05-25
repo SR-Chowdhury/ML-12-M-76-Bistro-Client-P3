@@ -1,14 +1,44 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../../Providers/AuthProvider';
+import Swal from 'sweetalert2';
 
 const NavBar = () => {
+
+    const { user, logOut } = useContext(AuthContext);
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        logOut()
+            .then(() => {
+                Swal.fire({
+                    title: 'Successfully Log out',
+                    showClass: {
+                        popup: 'animate__animated animate__fadeInDown'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__fadeOutUp'
+                    }
+                })
+                navigate('/');
+            })
+            .catch(err => console.log(err.message))
+    }
 
     const navOptions = <>
         <li><Link to={'/'}>Home</Link> </li>
         <li><Link to={'/menu'}>Menu</Link> </li>
         <li><Link to={'/order/salad'}>Order</Link> </li>
-        <li><Link to={'/login'}>Login</Link> </li>
-        <li><Link to={'/register'}>Register</Link> </li>
+        {
+            user ?
+                <>
+                    <li><Link onClick={handleLogout}>Logout</Link> </li>
+                </> :
+                <>
+                    <li><Link to={'/login'}>Login</Link> </li>
+                    <li><Link to={'/register'}>Register</Link> </li>
+                </>
+        }
     </>
     return (
         <div className="navbar max-w-screen-xl text-white fixed z-10 bg-[rgba(0,0,0,0.5)]">
