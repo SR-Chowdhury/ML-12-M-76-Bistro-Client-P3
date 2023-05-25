@@ -1,10 +1,17 @@
-import React, { useState } from 'react';
+import { loadCaptchaEnginge, LoadCanvasTemplate, LoadCanvasTemplateNoReload, validateCaptcha } from 'react-simple-captcha';
+import React, { useEffect, useRef, useState } from 'react';
 import './Login.css';
 import img from '../../assets/others/authentication1.png';
 
 const Login = () => {
 
     const [error, setError] = useState('');
+    const [disabled, setDisabled] = useState(true);
+    const captchaRef = useRef();
+
+    useEffect(() => {
+        loadCaptchaEnginge(6);
+    }, []);
 
     const handleSubmit = event => {
         event.preventDefault();
@@ -17,6 +24,21 @@ const Login = () => {
             setError('Password length at least 6 characters');
         }
     }
+
+    const handleCaptcha = () => {
+        const user_captcha_value = captchaRef.current.value;
+        console.log(user_captcha_value);
+
+        if (validateCaptcha(user_captcha_value)) {
+            setDisabled(false);
+            alert('Captcha matched!');
+        } else {
+            setDisabled(true);
+            alert('Captcha did not matched!');
+        }
+    }
+
+
 
     return (
         <div className='loginContainer'>
@@ -42,12 +64,20 @@ const Login = () => {
                                 <label className="label">
                                     <a href="#" className="label-text-alt link link-hover">Forgot password?</a>
                                 </label>
+                            </div>
+                            <div className="form-control">
+                                <label className="label">
+                                    <span className="label-text">Captcha</span>
+                                </label>
+                                <LoadCanvasTemplate />
+                                <input type="text" ref={captchaRef} name='captcha' placeholder="Type the captcha above" className="input input-bordered" />
+                                <button onClick={handleCaptcha} className='py-2 px-5 w-1/2 mx-auto mt-2 bg-gray-500'>Validate</button>
                                 {
                                     error && <p className='label-text-alt text-center text-red-600'>{error}</p>
                                 }
                             </div>
                             <div className="form-control mt-6">
-                                <button className="submitBtn">Login</button>
+                                <button className="submitBtn" disabled={disabled}>Login</button>
                             </div>
                         </form>
                     </div>
