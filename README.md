@@ -6,7 +6,8 @@
 * 76-4 Setup Login page with AuthContext
 * 76-5 Explore React Hook Form Validation, Error Handling
 * 76-6 Use Regex Validation In React Hook Form And Signup
-
+* 76-7 Logout, Sweet Alert And Some Bug Fix.
+* 76-8 Private Route And Redirect User After Login
 
 
 ## react-boilerplate-2
