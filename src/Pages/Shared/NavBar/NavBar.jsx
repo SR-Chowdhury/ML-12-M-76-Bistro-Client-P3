@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../Providers/AuthProvider';
 import Swal from 'sweetalert2';
+import userImg from '../../../assets/user.png';
 
 const NavBar = () => {
 
@@ -29,16 +30,6 @@ const NavBar = () => {
         <li><Link to={'/'}>Home</Link> </li>
         <li><Link to={'/menu'}>Menu</Link> </li>
         <li><Link to={'/order/salad'}>Order</Link> </li>
-        {
-            user ?
-                <>
-                    <li><Link onClick={handleLogout}>Logout</Link> </li>
-                </> :
-                <>
-                    <li><Link to={'/login'}>Login</Link> </li>
-                    <li><Link to={'/register'}>Register</Link> </li>
-                </>
-        }
     </>
     return (
         <div className="navbar max-w-screen-xl text-white fixed z-10 bg-[rgba(0,0,0,0.5)]">
@@ -59,7 +50,38 @@ const NavBar = () => {
                 </ul>
             </div>
             <div className="navbar-end">
-                <a className="btn">Get started</a>
+
+                <div className="dropdown dropdown-end">
+                    <label tabIndex={1} className="btn btn-ghost btn-circle avatar">
+                        <div className="w-10 rounded-full">
+                            {
+                                user?.photoURL ?
+                                    <img src={user?.photoURL} /> :
+                                    <img src={userImg} />
+                            }
+                        </div>
+                    </label>
+                    <ul tabIndex={1} className="mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52">
+                        <li>
+                            <a className="justify-between">
+                                {
+                                    user && <span className='font-bold'>{user?.displayName}</span>
+                                }
+                            </a>
+                        </li>
+                        {
+                            user ?
+                                <>
+                                    <li><Link onClick={handleLogout}>Logout</Link></li>
+                                </>
+                                :
+                                <>
+                                    <li><Link to={'/login'}>Login</Link></li>
+                                    <li><Link to={'/register'}>Register</Link></li>
+                                </>
+                        }
+                    </ul>
+                </div>
             </div>
         </div>
     );

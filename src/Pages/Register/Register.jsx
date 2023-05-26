@@ -5,58 +5,47 @@ import { AuthContext } from '../../Providers/AuthProvider';
 import Swal from 'sweetalert2';
 import { updateProfile } from 'firebase/auth';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Register = () => {
 
-    const { register, handleSubmit, watch, formState: { errors } } = useForm();
+    const { register, handleSubmit, reset, formState: { errors } } = useForm();
 
     const [error, setError] = useState('');
-    const { createUser } = useContext(AuthContext);
+    const { createUser, logOut } = useContext(AuthContext);
+    const navigate = useNavigate();
 
     const onSubmit = data => {
-        console.log(data);
+        createUser(data.email, data.password)
+        .then(result => {
+            Swal.fire({
+                title: 'Successfully User Created!',
+                showClass: {
+                    popup: 'animate__animated animate__fadeInDown'
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__fadeOutUp'
+                }
+            })
+            const loggedUser = result.user;
+            updateUserProfile(loggedUser, data.name, data.photo );
+            setError('');
+            reset();
+            logOut()
+                .then( () => navigate('/login'))
+            
+        })
+        .catch(err => setError(err.message))
     }
 
-    // const handleSubmit = event => {
-    //     event.preventDefault();
-    //     const form = event.target;
-    //     const name = form.name.value;
-    //     const email = form.email.value;
-    //     const password = form.password.value;
-    //     const formData = { name, email, password };
-    //     // console.log(formData);
-    //     if (password.length < 6) {
-    //         setError('Password length at least 6 characters');
-    //     }
-
-    //     createUser(email, password)
-    //         .then(result => {
-    //             Swal.fire({
-    //                 title: 'Successfully User Created!',
-    //                 showClass: {
-    //                     popup: 'animate__animated animate__fadeInDown'
-    //                 },
-    //                 hideClass: {
-    //                     popup: 'animate__animated animate__fadeOutUp'
-    //                 }
-    //             })
-    //             const loggedUser = result.user;
-    //             updateUserProfile(loggedUser, name);
-
-    //             setError('');
-    //             form.reset();
-    //         })
-    //         .catch(err => setError(err.message))
-    // }
-
-    // const updateUserProfile = (user, name) => {
-    //     updateProfile(user, {
-    //         displayName: name
-    //     })
-    //         .then( () => console.log('name successfully updated'))
-    //         .catch(err => setError(err.message))
-    // }
+    const updateUserProfile = (user, name, photo) => {
+        updateProfile(user, {
+            displayName: name,
+            photoURL: photo
+        })
+            .then( () => console.log('name successfully updated'))
+            .catch(err => setError(err.message))
+    }
 
     return (
         <div className='loginContainer'>
@@ -76,6 +65,13 @@ const Register = () => {
                                 </label>
                                 <input type="text" {...register("name", { required: true })} name="name" placeholder="name" className="input input-bordered" />
                                 {errors.name && <span className='label-text-alt ms-1 mt-2 text-red-600'>Name field is required</span>}
+                            </div>
+                            <div className="form-control">
+                                <label className="label">
+                                    <span className="label-text">Photo URL</span>
+                                </label>
+                                <input type="text" {...register("photo", { required: true })} name="photo" placeholder="Photo URL" className="input input-bordered" />
+                                {errors.photo && <span className='label-text-alt ms-1 mt-2 text-red-600'>Photo URL is required</span>}
                             </div>
                             <div className="form-control">
                                 <label className="label">

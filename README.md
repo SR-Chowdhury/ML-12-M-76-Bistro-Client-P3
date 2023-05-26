@@ -8,6 +8,7 @@
 * 76-6 Use Regex Validation In React Hook Form And Signup
 * 76-7 Logout, Sweet Alert And Some Bug Fix.
 * 76-8 Private Route And Redirect User After Login
+* 76-9 Module Summary And Update User Profile
 
 
 ## react-boilerplate-2
